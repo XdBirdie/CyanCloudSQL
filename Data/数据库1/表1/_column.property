@@ -1,0 +1,3 @@
+username string 20
+password string 20
+STDNum int 4
