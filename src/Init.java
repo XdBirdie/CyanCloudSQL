@@ -1,6 +1,9 @@
+import entities.DataBase;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Init {
@@ -9,6 +12,7 @@ public class Init {
     public static File DataProperty;// 数据库总的详细配置的File对象，与程序主体分离（目前不完善，待开发与设计）
     public static HashMap<String,String> PropMap;// 数据库总的详细配置的map
 
+    public static ArrayList<DataBase> dataBases = new ArrayList<>();// DataBase实体对象存入的唯一总列表
 
     // 程序的初始化类的构造方法，完成根配置、数据库总配置、每个数据库的独立配置的装载
     public Init() throws Exception {
@@ -55,15 +59,10 @@ public class Init {
             for (File ret :
                     listFiles) {
                 if (ret.isDirectory() && !ret.getName().equals(".coreDB")) {
-                    databaseInit(ret);
+                    dataBases.add(new DataBase(ret));
                 }
             }
         }
-    }
-
-    private boolean databaseInit(File database){
-
-        return true;
     }
 
     public static void main(String[] args) {
