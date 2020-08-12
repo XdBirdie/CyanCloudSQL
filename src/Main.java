@@ -2,6 +2,8 @@ import Core.Init;
 import Core.Entities.DataBase;
 import Core.Entities.Table;
 
+import java.io.*;
+
 /**
  * @author Ordi_P
  * @title: Main
@@ -11,8 +13,21 @@ import Core.Entities.Table;
  */
 public class Main {
     public static void main(String[] args) {
+//        OriginTextImage 初始字符logo的显示
         try {
+            File originTextImageFile = new File("src\\Static\\OriginTextImage.txt");
+            BufferedReader br = new BufferedReader(new FileReader(originTextImageFile));
+            while (br.ready()){
+                System.out.println(br.readLine());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+
+        try {
             Init.getInstance();
             for (DataBase database :
                     Init.dataBases) {
