@@ -1,4 +1,4 @@
-package entities;
+package Entities;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,18 +11,21 @@ public class Table {
     public HashMap<String,String> columnMap = new HashMap<>();// 列map
     public File tableRoot;// 根目录file
 
-    private File dataFile;// 数据文件
+    private File dataFile;// 数据文件夹
+    public File tablePropFile;// 表格基础配置文件
+    public File columnFile;// 列配置文件
 
+    // 构造器
     public Table(File tableFile) throws Exception {
         this.tableRoot = tableFile;
-        File tableProp = new File(this.tableRoot,"/_table.property");
-        File column = new File(this.tableRoot,"/_column.property");
-        dataFile = new File(this.tableRoot,"/_data1.data");
-        // 配置载入
+        tablePropFile = new File(this.tableRoot,"/_table.property");
+        columnFile = new File(this.tableRoot,"/_column.property");
+        dataFile = new File(this.tableRoot,"/data/");
+        // 配置载入（从配置文件载入到PropMap）
         {
             BufferedReader brProp;
             try {
-                brProp = new BufferedReader(new FileReader(tableProp));
+                brProp = new BufferedReader(new FileReader(tablePropFile));
             } catch (FileNotFoundException e) {
                 throw new Exception("数据表配置打开失败");
             }
@@ -39,11 +42,11 @@ public class Table {
             brProp.close();
         }
 
-        // 列载入
+        // 列载入（从列配置文件载入到columnMap）
         {
             BufferedReader brColumn;
             try {
-                brColumn = new BufferedReader(new FileReader(column));
+                brColumn = new BufferedReader(new FileReader(columnFile));
             } catch (FileNotFoundException e) {
                 throw new Exception("数据表列打开失败");
             }
@@ -53,11 +56,13 @@ public class Table {
                 if(readLine == null){
                     break;
                 } else{
-                    String[] split = readLine.split(" ");
+                    String[] split = readLine.split(":");
                     columnMap.put(split[0],split[1]);
                 }
             }
             brColumn.close();
         }
     }
+
+    
 }
