@@ -1,7 +1,6 @@
-import Entities.DataBase;
-import Entities.Table;
-
-import java.util.HashMap;
+import Core.Init;
+import Core.Entities.DataBase;
+import Core.Entities.Table;
 
 /**
  * @author Ordi_P

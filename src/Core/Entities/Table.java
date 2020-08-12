@@ -1,4 +1,4 @@
-package Entities;
+package Core.Entities;
 
 import java.io.BufferedReader;
 import java.io.File;

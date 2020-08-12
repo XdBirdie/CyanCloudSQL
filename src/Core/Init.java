@@ -1,11 +1,12 @@
-import Entities.DataBase;
+package Core;
+
+import Core.Entities.DataBase;
+import Log.User.AddLog;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 // 该类使用单例模式
@@ -22,7 +23,7 @@ public class Init {
 
     private Init() throws Exception {
         /**
-         * @title Init
+         * @title Core.Init
          * @description TODO 程序的初始化类的构造方法，完成根配置、数据库总配置、每个数据库的独立配置的装载
          * @param  
          * @return : null 
@@ -47,6 +48,8 @@ public class Init {
                     rootDir = new File(rootPath[1]);
                     // 判断数据库根目录是否存在
                     if (rootDir.exists() && rootDir.isDirectory()) {
+                        AddLog.Log("程序根配置读取成功");
+
                         // 获得数据库总的详细配置的File对象
                         DataProperty = new File(rootDir, ".coreDB/_database.property");
                         // 判断是否存在
@@ -64,6 +67,7 @@ public class Init {
                                     String[] split = readProp.split(":");
                                     PropMap.put(split[0], split[1]);
                                 }
+                                AddLog.Log("数据库根配置读取完成");
                             } catch (Exception e){
                                 throw new Exception("数据库根配置内容异常");
                             }
@@ -75,10 +79,10 @@ public class Init {
                     }
                 } else {
                     brCCS.close();
-                    throw new Exception("配置文件错误，请检查根配置文件");
+                    throw new Exception("程序配置文件错误，请检查根配置文件");
                 }
             } else {
-                throw new Exception("根配置文件错误");
+                throw new Exception("程序根配置文件错误");
             }
         }
 
@@ -93,15 +97,7 @@ public class Init {
             }
         }
 
-        Calendar calendar = Calendar.getInstance();
-        System.out.println(
-                "" +
-                        calendar.get(Calendar.YEAR) +
-                        "." +
-                        (calendar.get(Calendar.MONTH)+1) +
-                        "." +
-                        calendar.get(Calendar.DAY_OF_MONTH) +
-                        " 完成初始化！");
+        AddLog.Log("程序完成初始化");
     }
 
     public synchronized static Init getInstance(){
@@ -109,7 +105,7 @@ public class Init {
          * @title getInstance
          * @description TODO Double Check Lock（双重校验加锁机制实现单例模式）
          * @param
-         * @return : Init
+         * @return : Core.Init
          * @throws null
          * @author Ordi_P
          * @date 2020/8/12 21:12
