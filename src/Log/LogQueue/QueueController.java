@@ -1,6 +1,7 @@
 package Log.LogQueue;
 
 import Log.Entity.LogRoot;
+import Log.LoggerQueue;
 
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class QueueController {
     private volatile static QueueController queueController;
 
-    private volatile static ConcurrentLinkedQueue<LogRoot> logQueue = new ConcurrentLinkedQueue<>();
+    private static final LoggerQueue logQueue = new LoggerQueue();
 
     private QueueController() {
         new Thread(new MessageDealThread()).start();
@@ -27,26 +28,12 @@ public class QueueController {
     }
 
     public void addLogToQueue(String detail, String type){
-        /**
-         * @title addLogToQueue
-         * @description TODO 插入新的log到消息队列中
-         * @param detail
-         * @param type
-         * @return : void
-         * @throws null
-         * @author Ordi_P
-         * @date 2020/8/14 18:14
-         */
         LogRoot log = new LogRoot(detail,type);
-        logQueue.offer(log);
-
-        synchronized (logQueue){
-            logQueue.notify();
-        }
+        logQueue.push(log);
     }
 
     public static QueueController getInstance(){
-        /**
+        /*
          * @title getInstance
          * @description TODO 单列模式获取唯一对象的方法
          * @param
@@ -66,23 +53,13 @@ public class QueueController {
         return queueController;
     }
 
-    class MessageDealThread implements Runnable {
+    static class MessageDealThread implements Runnable {
         @Override
         public void run() {
             System.out.println("线程运行中");
             while(true){
-                synchronized (logQueue) {
-                    while (!logQueue.isEmpty()){
-                        LogRoot log = logQueue.poll();
-                        log.soutLog();
-                    }
-
-                    try {
-                        logQueue.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+                LogRoot log = logQueue.pop();
+                log.soutLog();
             }
 
         }
