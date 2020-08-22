@@ -1,7 +1,7 @@
 package Core;
 
 import Core.Entities.DataBase;
-import Log.User.AddLog;
+import Log.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,7 +48,7 @@ public class Init {
                     rootDir = new File(rootPath[1]);
                     // 判断数据库根目录是否存在
                     if (rootDir.exists() && rootDir.isDirectory()) {
-                        AddLog.Log("程序根配置读取成功");
+                        Logger.info("程序根配置读取成功");
 
                         // 获得数据库总的详细配置的File对象
                         DataProperty = new File(rootDir, ".coreDB/_database.property");
@@ -67,7 +67,7 @@ public class Init {
                                     String[] split = readProp.split(":");
                                     PropMap.put(split[0], split[1]);
                                 }
-                                AddLog.Log("数据库根配置读取完成");
+                                Logger.info("数据库根配置读取完成");
                             } catch (Exception e){
                                 throw new Exception("数据库根配置内容异常");
                             }
@@ -97,7 +97,7 @@ public class Init {
             }
         }
 
-        AddLog.Log("程序完成初始化");
+        Logger.info("程序完成初始化");
     }
 
     public synchronized static Init getInstance(){

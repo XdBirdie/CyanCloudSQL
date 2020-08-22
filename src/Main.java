@@ -1,6 +1,7 @@
 import Core.Init;
 import Core.Entities.DataBase;
 import Core.Entities.Table;
+import Log.Logger;
 
 import java.io.*;
 
@@ -26,6 +27,12 @@ public class Main {
             e.printStackTrace();
         }
 
+        Logger.info(">>>日志系统开始工作<<<");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         try {
             Init.getInstance();
